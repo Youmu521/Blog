@@ -2,13 +2,13 @@
 <header class="bg-dark">
     <nav class="navbar navbar-dark navbar-expand-lg container">
         <a href="#" class="navbar-brand col-1 pl-0 pr-0">
-            <img class="p-0" src="images/logo.jpg" alt="">
+            <img class="p-0" src="/images/logo.jpg" alt="">
         </a>
         <button type="button" class="btn btn-light navbar-toggler" data-toggle="collapse"
                 data-target="#navbarSupportedContent">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse navbar-expand-sm justify-content-between" id="navbarSupportedContent">
             <ul class="navbar-nav col-auto">
                 <li class="nav-item active">
                     <a class="nav-link" href="">博客 <span class="sr-only">(current)</span></a>
