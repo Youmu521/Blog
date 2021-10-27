@@ -20,3 +20,4 @@ Route::get('/', function () {
 Route::get('/blog/details', function () {
     return view('index.blog_details');
 })->name('blog.details');
+
