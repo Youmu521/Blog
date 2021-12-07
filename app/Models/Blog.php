@@ -10,5 +10,4 @@ class Blog extends Model
 {
 	use HasDateTimeFormatter;
     use SoftDeletes;
-
-}
+    }

@@ -6,7 +6,7 @@ use App\Admin\Repositories\Itemize;
 use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
 use Dcat\Admin\Show;
-use Dcat\Admin\Controllers\AdminController;
+use Dcat\Admin\Http\Controllers\AdminController;
 
 class ItemizeController extends AdminController
 {
@@ -19,9 +19,9 @@ class ItemizeController extends AdminController
     {
         return Grid::make(new Itemize(), function (Grid $grid) {
             $grid->column('id')->sortable();
-
             $grid->column('name')->label();
             $grid->column('image')->image('',100,100);
+
             $grid->column('is_disable')->switch();
             $grid->column('created_at');
             $grid->column('updated_at')->sortable();
@@ -50,8 +50,8 @@ class ItemizeController extends AdminController
     {
         return Show::make($id, new Itemize(), function (Show $show) {
             $show->field('id');
-            $show->field('image')->image();
-
+            $show->field('image');
+            $show->field('name');
             // using 设置显示  dot 设置前面的小圆点
             $show->field('is_disable')
                 ->using([0=>"未禁用",1=>"已禁用"])
@@ -59,14 +59,8 @@ class ItemizeController extends AdminController
                     0 => "success",
                     1 => "danger"
                 ],"success");
-            $show->field('name');
             $show->field('created_at');
             $show->field('updated_at');
-
-            $show->panel()
-                ->tools(function ($tools) {
-                    $tools->disableDelete();
-                });
         });
     }
 
@@ -79,13 +73,13 @@ class ItemizeController extends AdminController
     {
         return Form::make(new Itemize(), function (Form $form) {
             $form->display('id');
+
             $form->text('name')->required();
-            //图片将自动上传
             $form->image('image')->autoUpload()->uniqueName()->required();
             $form->switch('is_disable');
+
             $form->display('created_at');
             $form->display('updated_at');
         });
     }
-
 }

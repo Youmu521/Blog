@@ -16,4 +16,7 @@ Route::group([
     $router->resource('blogs',"BlogController");
     $router->resource("itemizes","ItemizeController");
     $router->resource("label","LabelController");
+    $router->resource("user","UserController");
+    $router->resource("notice","NoticeController");
+    $router->resource("web","WebController");
 });

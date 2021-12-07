@@ -13,5 +13,4 @@ class Itemize extends EloquentRepository
      * @var string
      */
     protected $eloquentClass = Model::class;
-
 }
