@@ -36,10 +36,11 @@ namespace Dcat\Admin {
      * @property Grid\Column|Collection password
      * @property Grid\Column|Collection avatar
      * @property Grid\Column|Collection remember_token
+     * @property Grid\Column|Collection b_id
+     * @property Grid\Column|Collection l_id
      * @property Grid\Column|Collection itemize_id
      * @property Grid\Column|Collection cover
      * @property Grid\Column|Collection content
-     * @property Grid\Column|Collection label
      * @property Grid\Column|Collection is_open
      * @property Grid\Column|Collection exposure
      * @property Grid\Column|Collection deleted_at
@@ -88,10 +89,11 @@ namespace Dcat\Admin {
      * @method Grid\Column|Collection password(string $label = null)
      * @method Grid\Column|Collection avatar(string $label = null)
      * @method Grid\Column|Collection remember_token(string $label = null)
+     * @method Grid\Column|Collection b_id(string $label = null)
+     * @method Grid\Column|Collection l_id(string $label = null)
      * @method Grid\Column|Collection itemize_id(string $label = null)
      * @method Grid\Column|Collection cover(string $label = null)
      * @method Grid\Column|Collection content(string $label = null)
-     * @method Grid\Column|Collection label(string $label = null)
      * @method Grid\Column|Collection is_open(string $label = null)
      * @method Grid\Column|Collection exposure(string $label = null)
      * @method Grid\Column|Collection deleted_at(string $label = null)
@@ -145,10 +147,11 @@ namespace Dcat\Admin {
      * @property Show\Field|Collection password
      * @property Show\Field|Collection avatar
      * @property Show\Field|Collection remember_token
+     * @property Show\Field|Collection b_id
+     * @property Show\Field|Collection l_id
      * @property Show\Field|Collection itemize_id
      * @property Show\Field|Collection cover
      * @property Show\Field|Collection content
-     * @property Show\Field|Collection label
      * @property Show\Field|Collection is_open
      * @property Show\Field|Collection exposure
      * @property Show\Field|Collection deleted_at
@@ -197,10 +200,11 @@ namespace Dcat\Admin {
      * @method Show\Field|Collection password(string $label = null)
      * @method Show\Field|Collection avatar(string $label = null)
      * @method Show\Field|Collection remember_token(string $label = null)
+     * @method Show\Field|Collection b_id(string $label = null)
+     * @method Show\Field|Collection l_id(string $label = null)
      * @method Show\Field|Collection itemize_id(string $label = null)
      * @method Show\Field|Collection cover(string $label = null)
      * @method Show\Field|Collection content(string $label = null)
-     * @method Show\Field|Collection label(string $label = null)
      * @method Show\Field|Collection is_open(string $label = null)
      * @method Show\Field|Collection exposure(string $label = null)
      * @method Show\Field|Collection deleted_at(string $label = null)

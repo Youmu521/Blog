@@ -17,9 +17,10 @@ class LabelController extends AdminController
      */
     protected function grid()
     {
-        return Grid::make(new Label(), function (Grid $grid) {
+        return Grid::make(new Label('blog'), function (Grid $grid) {
             $grid->column('id')->sortable();
             $grid->column('name')->label();
+            $grid->blog()->count();
             $grid->column('is_disable')->switch();
             $grid->column('created_at');
             $grid->column('updated_at')->sortable();

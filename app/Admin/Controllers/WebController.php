@@ -29,7 +29,7 @@ class WebController extends AdminController
 
             $grid->column('is_bottom')->bool();
             $grid->column('remarks');
-            $grid->column('url');
+            $grid->column('url')->link();
 
             $grid->filter(function (Grid\Filter $filter) {
                 $filter->equal('id');

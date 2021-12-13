@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Itemize extends Model
 {
-	use HasDateTimeFormatter;    }
+	use HasDateTimeFormatter;
+
+}

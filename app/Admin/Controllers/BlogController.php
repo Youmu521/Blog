@@ -2,18 +2,14 @@
 
 namespace App\Admin\Controllers;
 
-use App\Admin\Repositories\Blog;
-
+use App\Models\Blog;
 use App\Models\Itemize;
 use App\Models\Label;
+use App\Models\User;
 use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
 use Dcat\Admin\Show;
 use Dcat\Admin\Http\Controllers\AdminController;
-
-use App\Models\Blog AS blogs;
-use App\Admin\Actions\Blog\Restore;
-use App\Admin\Actions\Blog\BatchRestore;
 
 class BlogController extends AdminController
 {
@@ -24,43 +20,27 @@ class BlogController extends AdminController
      */
     protected function grid()
     {
-        return Grid::make(new Blog(), function (Grid $grid) {
+        return Grid::make(Blog::with('user','itemize','label'), function (Grid $grid) {
             $grid->column('id')->sortable();
+            $grid->column('user.name','用户');
+            $grid->column('itemize.name','分类')->select(Itemize::where('is_disable',0)->pluck('name','id'));
+            $grid->column('cover');
+            $grid->label()->pluck('name')->label();
             $grid->column('title');
-            $grid->column('user_id');
-            $grid->column('exposure');
             $grid->column('is_open')->switch();
-
-            //获取 分类列表
-            $itemizes = $this->getLabelsOrItemize('itemize');
-            $grid->column('itemize')->select($itemizes);
-            $grid->column('label')->label();
-
-
+            $grid->column('is_markdown','内容类型')
+                ->using([0 => '普通博客','1' => 'markdown'])
+                ->dot([
+                    0 => 'primary',
+                    1 => 'success'
+                ])->label('yellow');
+            $grid->column('exposure');
             $grid->column('created_at');
             $grid->column('updated_at')->sortable();
-//            $grid->column('content');
 
-            $grid->filter(function (Grid\Filter $filter) use ($itemizes) {
+            $grid->filter(function (Grid\Filter $filter) {
                 $filter->equal('id');
-                $filter->equal('user_id');
-                $filter->equal('itemize')->select($itemizes);
-                $filter->like('label');
-                $filter->equal('is_open')->select([ 0 => "未公开",1 => "已公开"]);
-                $filter->scope('trashed', '回收站')->onlyTrashed();
 
-            });
-
-            $grid->actions(function (Grid\Displayers\Actions $actions) {
-                if (request('_scope_') == 'trashed') {
-                    $actions->append(new Restore(blogs::class));
-                }
-            });
-
-            $grid->batchActions(function (Grid\Tools\BatchActions $batch) {
-                if (request('_scope_') == 'trashed') {
-                    $batch->add(new BatchRestore(blogs::class));
-                }
             });
         });
     }
@@ -74,27 +54,31 @@ class BlogController extends AdminController
      */
     protected function detail($id)
     {
-        return Show::make($id, new Blog(), function (Show $show) {
+        return Show::make($id, Blog::with('user','itemize','label'), function (Show $show) {
             $show->field('id');
-
-            $show->field('title');
+            $show->field('user.name','用户');
+            $show->field('itemize.name','分类');
             $show->field('cover')->image();
-            $show->field('exposure');
+            $show->field('title');
+
+            $show->label()->pluck('name')->label();
             $show->field('is_open')
                 ->using([0=>"未公开",1=>"已公开"])
                 ->dot([
                     0 => "danger",
                     1 => "success"
                 ],"danger");
-            $itemizes = $this->getLabelsOrItemize('itemize');
-
-            $show->field('itemize')->using($itemizes);
-            $show->field('label')->explode()->label();
-            $show->field('user_id');
-            $show->content();
+            $show->field('is_markdown','内容类型')
+                ->using([0 => '普通博客',1 => 'markdown'])
+                ->dot([
+                    0 => 'primary',
+                    1 => 'success'
+                ]);
+            $show->field('content');
+            $show->field('markdown');
+            $show->field('exposure');
             $show->field('created_at');
             $show->field('updated_at');
-
         });
     }
 
@@ -105,50 +89,54 @@ class BlogController extends AdminController
      */
     protected function form()
     {
-        return Form::make(new Blog(), function (Form $form) {
+        return Form::make(Blog::with('label'), function (Form $form) {
             $form->display('id');
-
-            $form->hidden('exposure')->default(0);
-            $form->hidden('user_id')->default(1);
+            $form->select('user_id')
+                ->options(User::all()->pluck('name','id'))
+                ->default(1);
             $form->image('cover')->autoUpload();
             $form->text('title')->required();
+            $form->select('itemize_id')
+                ->options(Itemize::where('is_disable',0)->pluck('name','id'))
+                ->required();
 
-            //获取 分类列表
-            $itemizes = $this->getLabelsOrItemize('itemize');
-            // 填充至下拉
-            $form->select('itemize')->required()->options($itemizes);
-            //获取 标签列表
-            $labels = $this->getLabelsOrItemize('label');
-            $form->tags('label', '标签')->options($labels)->saveAsString();
+            $form->tags('label','标签')
+                ->pluck('name','id')
+                ->options(Label::where('is_disable',0)->get())
+                ->saving(function ($value) {
+                    $arr = [];
+                    //循环提交，如果为数字，就不存储
+                    foreach ($value as $v){
+                        if (is_numeric($v)){
+                            $arr[] = $v;
+                        }else{
+                            // 避免重复提交，如果标签存在，就返回 id，它的值竟然是 id（开始以为 key 才是 id）
+                            $label = Label::firstOrCreate(['name' => $v]);
+                            $arr[] = (string)$label->id;
+                        }
+                    }
+                    return $arr;
+                });
+            // 默认为
+            $form->radio('is_markdown','内容类型')
+                ->when(0,function (Form $form){
+                    $form->editor('content');
+                })
+                ->when(1,function (Form $form){
+                    $form->markdown('markdown');
+                })
+                ->options([
+                    0 => "普通博客",
+                    1 => 'markdown'
+                ])
+                ->default(0);
+
 
             $form->switch('is_open');
-            $form->markdown('content');
+            $form->hidden('exposure')->default(0);
 
             $form->display('created_at');
             $form->display('updated_at');
-
         });
-    }
-
-    /**
-     * 获取 label标签 和 itemize分类 并转换成数组
-     * @param $str
-     * @return array
-     */
-
-    private function getLabelsOrItemize($str): array
-    {
-        if(strtolower($str) === 'label'){
-            $res = Label::select('id','name')->orderBy('created_at')->get();
-        }else if(strtolower($str) === 'itemize'){
-            $res = Itemize::select('id','name')->orderBy('created_at')->get();
-        }else{
-            return [];
-        }
-        $labels = [];
-        foreach ( $res as $label){
-            $labels[$label['id']] = $label['name'];
-        }
-        return $labels;
     }
 }
