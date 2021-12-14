@@ -3,7 +3,7 @@
     <div class="col bg-white mt-3 article_content p-4">
         <div class="article_info">
             <h1>
-                这里是标题
+                {{ $blog->title }}
             </h1>
             <ul class="row">
                 <li class="mr-3">
@@ -11,7 +11,7 @@
                         <svg class="icon" aria-hidden="true">
                             <use xlink:href="#icon-time-circle"></use>
                         </svg>
-                        时间
+                        {{ $blog->created_at->diffForHumans() }}
                     </div>
                 </li>
                 <li class="mr-3">
@@ -19,7 +19,7 @@
                         <svg class="icon" aria-hidden="true">
                             <use xlink:href="#icon-user"></use>
                         </svg>
-                        用户名
+                        {{ $blog->user->name }}
                     </div>
                 </li>
                 <li class="mr-3">
@@ -27,14 +27,15 @@
                         <svg class="icon" aria-hidden="true">
                             <use xlink:href="#icon-eye"></use>
                         </svg>
-                        曝光
+                        {{ $blog->exposure }}
                     </div>
                 </li>
             </ul>
         </div>
 
-        <article id="content">
+        <article id="content" class="md">
 
+            {{ $blog->content }}
         </article>
     </div>
     <div class="article_page row">
@@ -121,6 +122,8 @@
     }
 @endsection
 @section('script')
-    var md = "# Composer";
+
+    var md = $("#content").html();
+    console.log(md);
     $("#content").html(marked(md));
 @endsection

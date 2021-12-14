@@ -28,12 +28,6 @@ class BlogController extends AdminController
             $grid->label()->pluck('name')->label();
             $grid->column('title');
             $grid->column('is_open')->switch();
-            $grid->column('is_markdown','内容类型')
-                ->using([0 => '普通博客','1' => 'markdown'])
-                ->dot([
-                    0 => 'primary',
-                    1 => 'success'
-                ])->label('yellow');
             $grid->column('exposure');
             $grid->column('created_at');
             $grid->column('updated_at')->sortable();
@@ -68,14 +62,8 @@ class BlogController extends AdminController
                     0 => "danger",
                     1 => "success"
                 ],"danger");
-            $show->field('is_markdown','内容类型')
-                ->using([0 => '普通博客',1 => 'markdown'])
-                ->dot([
-                    0 => 'primary',
-                    1 => 'success'
-                ]);
+
             $show->field('content');
-            $show->field('markdown');
             $show->field('exposure');
             $show->field('created_at');
             $show->field('updated_at');
@@ -117,20 +105,7 @@ class BlogController extends AdminController
                     }
                     return $arr;
                 });
-            // 默认为
-            $form->radio('is_markdown','内容类型')
-                ->when(0,function (Form $form){
-                    $form->editor('content');
-                })
-                ->when(1,function (Form $form){
-                    $form->markdown('markdown');
-                })
-                ->options([
-                    0 => "普通博客",
-                    1 => 'markdown'
-                ])
-                ->default(0);
-
+            $form->markdown('content');
 
             $form->switch('is_open');
             $form->hidden('exposure')->default(0);

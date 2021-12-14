@@ -2,15 +2,14 @@
 
 @section('content')
     <div class="row justify-content-between ml-1 mr-1">
-        @for($i = 0; $i < 4 ;$i++)
+        @foreach($blogs as $blog)
             <div class="col-12 col-sm-6 col-md-6 col-lg-6 p-3" >
                 <div class="blog-list overflow-hidden">
                     <div class="overflow-hidden">
-                        <a href="{{  route('blog.details')  }}" class=" d-block w-100 h-100">
+                        <a href="{{  route('blog.details',$blog)  }}" target="_blank" class=" d-block w-100 h-100">
                             <div class="w-100 h-100">
-                                <h2 class="w-75 text-center">这里是标题这里是标题这里是标题这里是标题</h2>
-                                <p class="w-75">这里是内容这里是内容这里是内容这里是内容这里是
-                                    内容这里是内容这里是内容这里是内容这里是内容</p>
+                                <h2 class="w-75 text-center">{{ $blog->title }}</h2>
+                                <p class="w-75">{{ $blog->content }}</p>
                             </div>
                         </a>
                     </div>
@@ -24,7 +23,7 @@
                                     <svg class="icon" aria-hidden="true">
                                         <use xlink:href="#icon-time-circle"></use>
                                     </svg>
-                                    时间
+                                    {{ $blog->created_at->diffForHumans() }}
                                 </div>
                             </li>
                             <li class="ml-2 mr-2">
@@ -32,7 +31,7 @@
                                     <svg class="icon" aria-hidden="true">
                                         <use xlink:href="#icon-user"></use>
                                     </svg>
-                                    用户名
+                                    {{ $blog->user->name }}
                                 </div>
                             </li>
                             <li class="ml-2 mr-2">
@@ -48,14 +47,14 @@
                                     <svg class="icon" aria-hidden="true">
                                         <use xlink:href="#icon-eye"></use>
                                     </svg>
-                                    曝光
+                                    {{ $blog->exposure }}
                                 </div>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
-        @endfor
+        @endforeach
     </div>
     <div class="d-none d-lg-block">
         <nav aria-label="Page navigation example">
@@ -160,4 +159,10 @@
         line-height: 40px;
         font-size: 0.5rem;
     }
+@endsection
+@section('script')
+    $str = marked($('.content').html()).replace(/<[^>]+>/g,"");
+    console.log($str);
+    var md = "# Composer";
+    $("#content").html(marked(md));
 @endsection

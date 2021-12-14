@@ -22,8 +22,6 @@ class CreateBlogsTable extends Migration
             $table->string("cover")->comment("封面")->nullable();
 
             $table->string("title")->comment("博客标题");
-            $table->boolean('is_markdown')->comment("是否是markdown");
-            $table->text('markdown')->comment("markdown内容");
             $table->text('content')->comment("博客内容");
             $table->boolean('is_open')->comment("是否公开");
             $table->integer("exposure")->comment("曝光量");
