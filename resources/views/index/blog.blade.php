@@ -9,7 +9,11 @@
                         <a href="{{  route('blog.details',$blog)  }}" target="_blank" class=" d-block w-100 h-100">
                             <div class="w-100 h-100">
                                 <h2 class="w-75 text-center">{{ $blog->title }}</h2>
-                                <p class="w-75">{{ $blog->content }}</p>
+                                <article class="w-75 markdown-content">
+                                    <x-markdown>
+                                        {{ $blog->content }}
+                                    </x-markdown>
+                                </article>
                             </div>
                         </a>
                     </div>
@@ -56,34 +60,39 @@
             </div>
         @endforeach
     </div>
-    <div class="d-none d-lg-block">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-end ">
-                <li class="page-item">
-                    <a class="page-link" href="#">首页</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">上一页</a>
-                </li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                <li class="page-item"><a class="page-link" href="#">5</a></li>
-                <li class="page-item"><a class="page-link" href="#">6</a></li>
-                <li class="page-item"><a class="page-link" href="#">7</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">下一页</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">尾页</a>
-                </li>
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">共7页</a>
-                </li>
-            </ul>
-        </nav>
+    <div class="blog_page">
+        {{ $blogs->withQueryString()->links('common.page') }}
     </div>
+
+
+{{--    <div class="d-none d-lg-block">--}}
+{{--        <nav aria-label="Page navigation example">--}}
+{{--            <ul class="pagination justify-content-end ">--}}
+{{--                <li class="page-item">--}}
+{{--                    <a class="page-link" href="#">首页</a>--}}
+{{--                </li>--}}
+{{--                <li class="page-item">--}}
+{{--                    <a class="page-link" href="#">上一页</a>--}}
+{{--                </li>--}}
+{{--                <li class="page-item active"><a class="page-link" href="#">1</a></li>--}}
+{{--                <li class="page-item"><a class="page-link" href="#">2</a></li>--}}
+{{--                <li class="page-item"><a class="page-link" href="#">3</a></li>--}}
+{{--                <li class="page-item"><a class="page-link" href="#">4</a></li>--}}
+{{--                <li class="page-item"><a class="page-link" href="#">5</a></li>--}}
+{{--                <li class="page-item"><a class="page-link" href="#">6</a></li>--}}
+{{--                <li class="page-item"><a class="page-link" href="#">7</a></li>--}}
+{{--                <li class="page-item">--}}
+{{--                    <a class="page-link" href="#">下一页</a>--}}
+{{--                </li>--}}
+{{--                <li class="page-item">--}}
+{{--                    <a class="page-link" href="#">尾页</a>--}}
+{{--                </li>--}}
+{{--                <li class="page-item disabled">--}}
+{{--                    <a class="page-link" href="#" tabindex="-1">共7页</a>--}}
+{{--                </li>--}}
+{{--            </ul>--}}
+{{--        </nav>--}}
+{{--    </div>--}}
 @endsection
 
 @section('recommend')
@@ -93,11 +102,12 @@
                 公告栏
             </h2>
             <p class="bulletin-p">
-                测试版本
+                {{ $notice->text }}
             </p>
         </div>
     </div>
-    @parent
+{{--  传递数据  --}}
+    @include('common.rande',['blog_rands' => $blog_rands])
 @endsection
 
 @section('style')
@@ -130,7 +140,7 @@
         left:50%;
         transform:translate(-50%,-50%);
     }
-    .blog-list .overflow-hidden a p{
+    .blog-list .overflow-hidden a .markdown-content{
         letter-spacing:1px;
         font-size:14px;
         text-shadow: 0 0 6px rgba(0,0,0,.6);
@@ -140,6 +150,14 @@
         left:50%;
         transform:translate(-50%,-50%);
         opacity:0;
+{{--        text-align:justify;--}}
+        text-overflow:ellipsis;
+        overflow:hidden;
+{{--        white-space:nowrap;--}}
+        word-break: break-all;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
     }
     .blog-list:hover{
         transform:scale(1.03);
@@ -150,7 +168,7 @@
     .blog-list:hover .overflow-hidden a h2{
         top:40%;
     }
-    .blog-list:hover .overflow-hidden a p{
+    .blog-list:hover .overflow-hidden a .markdown-content{
         top:70%;
         opacity:1;
     }
@@ -159,10 +177,24 @@
         line-height: 40px;
         font-size: 0.5rem;
     }
+    .blog_page nav{
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+    .markdown-content{
+
+    }
 @endsection
 @section('script')
-    $str = marked($('.content').html()).replace(/<[^>]+>/g,"");
-    console.log($str);
-    var md = "# Composer";
-    $("#content").html(marked(md));
+    $(function (){
+        $('.markdown-content').each(function(value){
+            //console.log($(this).html());
+            $(this).html(delHtmlTag($(this).html()))
+        });
+
+        function delHtmlTag(str){
+    　　     return str.replace(/<[^>]+>/g,"").replace(/\s*/g,"");
+        }
+    })
 @endsection

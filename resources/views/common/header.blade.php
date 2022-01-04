@@ -10,27 +10,24 @@
         </button>
         <div class="collapse navbar-collapse navbar-expand-sm justify-content-between" id="navbarSupportedContent">
             <ul class="navbar-nav col-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="">博客 <span class="sr-only">(current)</span></a>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('blog') }}">博客 <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="">分类</a>
+                    <a class="nav-link" href="{{ route('itemize') }}">分类</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="">常用网站</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="">暂时不清楚</a>
-                </li>
             </ul>
-            <div class="input-group col-lg-4" style="padding: 0;">
-                <input type="text" class="form-control">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-light">
-                        搜索
-                    </button>
-                </div>
-            </div>
+                <form class="input-group col-lg-4" style="padding: 0;" action="{{ route('blog') }}" method="get">
+                    <input type="text" name="search" class="form-control" value="{{ request()->query('search') }}">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-light" type="submit">
+                            搜索
+                        </button>
+                    </div>
+                </form>
         </div>
     </nav>
 </header>

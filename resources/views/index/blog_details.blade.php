@@ -27,16 +27,26 @@
                         <svg class="icon" aria-hidden="true">
                             <use xlink:href="#icon-eye"></use>
                         </svg>
+                        <code></code>
+                        <p>
+                            <code></code>
+                        </p>
+                        <span>
+                            <code></code>
+                        </span>
+                        <pre>
+                            <code></code>
+                        </pre>
                         {{ $blog->exposure }}
                     </div>
                 </li>
             </ul>
         </div>
-
-        <article id="content" class="md">
-
-            {{ $blog->content }}
-        </article>
+            <article  class="md">
+                <x-markdown theme="github-dark">
+                    {!! $blog->content !!}
+                </x-markdown>
+            </article>
     </div>
     <div class="article_page row">
         <div class="col-6">
@@ -52,6 +62,9 @@
             </a>
         </div>
     </div>
+@endsection
+@section('recommend')
+    @include('common.rande',['blog_rands' => $blog_rands])
 @endsection
 @section('style')
     .article_content{
@@ -121,9 +134,4 @@
         color: #fff;
     }
 @endsection
-@section('script')
 
-    var md = $("#content").html();
-    console.log(md);
-    $("#content").html(marked(md));
-@endsection

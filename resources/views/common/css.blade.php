@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="/css/bootstrap.min.css">
 <link rel="stylesheet" href="/css/iconfont.css">
-<link rel="stylesheet" href="/css/markdown.css">
+<link rel="stylesheet" href="/css/md.style.css">
 <style>
     {{--  修改通用样式  --}}
     *{
@@ -27,6 +27,7 @@
         line-height: 30px;
         position: relative;
         margin-bottom: 10px;
+
     }
     .h2-before:before{
         content: "";
@@ -167,6 +168,21 @@
         background-color: #fff;
         border: 1px solid hsla(0,0%,84.7%,.882353);
         color: #666;
+    }
+
+    body::-webkit-scrollbar{
+        width: 4px;
+        height: 1px;
+    }
+    body::-webkit-scrollbar-thumb{
+        border-radius: 2px;
+        -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0.2);
+        background: #797979;
+    }
+    body::-webkit-scrollbar-track{
+        border-radius: 2px;
+        -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0.2);
+        background: #EDEDED;
     }
     @yield('style')
 </style>

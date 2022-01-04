@@ -11,19 +11,17 @@ use Dcat\Admin\Grid;
 use Dcat\Admin\Show;
 use Dcat\Admin\Http\Controllers\AdminController;
 
+
 class BlogController extends AdminController
 {
-    /**
-     * Make a grid builder.
-     *
-     * @return Grid
-     */
+
+
     protected function grid()
     {
         return Grid::make(Blog::with('user','itemize','label'), function (Grid $grid) {
             $grid->column('id')->sortable();
             $grid->column('user.name','用户');
-            $grid->column('itemize.name','分类')->select(Itemize::where('is_disable',0)->pluck('name','id'));
+            $grid->column('itemize_id','分类')->select(Itemize::where('is_disable',0)->pluck('name','id'));
             $grid->column('cover');
             $grid->label()->pluck('name')->label();
             $grid->column('title');
