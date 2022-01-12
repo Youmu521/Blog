@@ -1,7 +1,7 @@
 @extends('common.default')
 
 @section('container')
-    <div class="row" style="margin-top: 20px">
+    <div class="row" style="padding-top: 20px">
         @foreach($itemizes as $itemize)
             <div class="col-xs-12 col-md-4">
                 <a href="{{ route('blog',['search' => $itemize->name]) }}" class="thumbnail">

@@ -77,9 +77,28 @@
     border-radius: 50%;
     background-color: #27c93f;
 }
+.md ul{
+    margin: 10px 0;
+}
+.md ul li{
+    position: relative;
+    padding-left: 20px;
+    line-height: 24px;
+    margin-bottom: 5px;
+}
 .md ul li:before{
     background-color: #187fff;
     box-shadow: 0 0 5px #187fff;
+
+}
+.md ul li:before{
+    content: "";
+    width: 8px;
+    height: 8px;
+    left: 0;
+    top: 8px;
+    border-radius: 50%;
+    position: absolute;
 }
 .md blockquote{
     border-left: 3px solid #c3bebe;
@@ -89,3 +108,22 @@
     margin: 10px 0;
 }
 
+.tags{
+    border-top: 1px solid #f9f9f9;
+    padding-top: 20px;
+    overflow: hidden;
+}
+.tags ul li {
+    float: left;
+}
+.tags ul li a{
+    background-color: #19bce7;
+    color: #fff;
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+    border-radius: 5px;
+    margin-right: 10px;
+    font-size: 12px;
+}

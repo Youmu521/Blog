@@ -10,7 +10,11 @@ use Spatie\EloquentSortable\Sortable;
 
 class Web extends Model implements Sortable
 {
-    use HasDateTimeFormatter,ModelTree;
+    use HasDateTimeFormatter, ModelTree;
+
     protected $table = 'web';
 
+
+
 }
+

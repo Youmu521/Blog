@@ -48,7 +48,27 @@ class BlogController extends Controller
     public function details(Blog $blog)
     {
         $blog_rands = $this->default();
-        return view('index.blog_details',['blog' => $blog,'blog_rands' => $blog_rands]);
+        $blog->timestamps = false;
+        $blog->increment('exposure');
+        $blog->timestamps = true;
+
+        //下一页
+        $downId = Blog::where('id', '<', $blog->id)->max('id');
+
+        if(empty($downId)){
+            $downId = -1;
+        }else{
+            $downId = Blog::select('id','title')->where('id', $downId)->first('id','title');
+        }
+        //上一页
+        $upId = Blog::where('id', '>', $blog->id)->min('id');
+        if(empty($upId)){
+            $upId = -1;
+        }else{
+            $upId = Blog::select('id','title')->where('id', $upId)->first();
+        }
+
+        return view('index.blog_details',['blog' => $blog,'blog_rands' => $blog_rands,'upId' => $upId, 'downId' => $downId]);
     }
 
     /**

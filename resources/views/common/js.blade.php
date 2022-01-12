@@ -1,7 +1,9 @@
 <script src="/js/jquery-3.5.1.min.js"></script>
+<script src="/js/popper.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/iconfont.js"></script>
 
+<script src="/js/lozad.js"></script>
 <script>
     @yield('script')
 </script>

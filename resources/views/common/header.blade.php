@@ -17,7 +17,7 @@
                     <a class="nav-link" href="{{ route('itemize') }}">分类</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="">常用网站</a>
+                    <a class="nav-link" href="{{ route('web') }}">常用网站</a>
                 </li>
             </ul>
                 <form class="input-group col-lg-4" style="padding: 0;" action="{{ route('blog') }}" method="get">

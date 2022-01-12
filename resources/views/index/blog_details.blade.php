@@ -27,16 +27,6 @@
                         <svg class="icon" aria-hidden="true">
                             <use xlink:href="#icon-eye"></use>
                         </svg>
-                        <code></code>
-                        <p>
-                            <code></code>
-                        </p>
-                        <span>
-                            <code></code>
-                        </span>
-                        <pre>
-                            <code></code>
-                        </pre>
                         {{ $blog->exposure }}
                     </div>
                 </li>
@@ -47,20 +37,50 @@
                     {!! $blog->content !!}
                 </x-markdown>
             </article>
+            <div class="tags">
+                <ul>
+                    @foreach($blog->label as $value)
+                        <li>
+                            <a href="{{ route('blog',['search' => $value['name']]) }}">
+                                {{ $value['name'] }}
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
     </div>
     <div class="article_page row">
-        <div class="col-6">
-            <a href="#" class="mr-3">
-                <p>上一篇</p>
-                <h4>这是标题</h4>
-            </a>
-        </div>
-        <div class="col-6">
-            <a href="#" class="ml-3">
-                <p>下一篇</p>
-                <h4>这是标题</h4>
-            </a>
-        </div>
+        @if($upId === -1)
+            <div class="col-6">
+                <a href="javascript:" class="mr-3">
+                    <p>上一篇</p>
+                    <h4>没有上一篇文章了</h4>
+                </a>
+            </div>
+        @else
+            <div class="col-6">
+                <a href="{{ route('blog.details',$upId) }}" class="mr-3">
+                    <p>上一篇</p>
+                    <h4>{{ $upId->title }}</h4>
+                </a>
+            </div>
+        @endif
+
+            @if($downId === -1)
+                <div class="col-6">
+                    <a href="javascript:" class="mr-3">
+                        <p>下一篇</p>
+                        <h4>已经到最低部了</h4>
+                    </a>
+                </div>
+            @else
+                <div class="col-6">
+                    <a href="{{ route('blog.details',$downId) }}" class="mr-3">
+                        <p>下一篇</p>
+                        <h4>{{ $downId->title }}</h4>
+                    </a>
+                </div>
+            @endif
     </div>
 @endsection
 @section('recommend')
